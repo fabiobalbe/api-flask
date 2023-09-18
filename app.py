@@ -19,7 +19,26 @@ def fetch_spacex_launches():
         return []
 
 
-launches = fetch_spacex_launches()
+def categorize_launches(launches):
+    successful = list(filter(
+        lambda x: x["success"] and not x["upcoming"], launches))
+
+    failed = list(filter(
+        lambda x: not x["success"] and not x["upcoming"], launches))
+
+    upcoming = list(filter(
+        lambda x: x["upcoming"], launches))
+
+    return {
+        "successful": successful,
+        "failed": failed,
+        "upcoming": upcoming
+    }
+
+
+launches = categorize_launches(fetch_spacex_launches())
+
+print(launches)
 
 
 if __name__ == "__main__":
